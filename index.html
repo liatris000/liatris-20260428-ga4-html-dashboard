@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Webアクセス解析ダッシュボード（サンプルデータ）</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --primary: #6c47ff;
+    --accent: #ff6b6b;
+    --bg: #0f0f1a;
+    --surface: #1a1a2e;
+    --border: #2a2a4a;
+    --text: #e8e8f0;
+    --muted: #8888aa;
+    --green: #00c896;
+    --yellow: #ffd166;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', 'Hiragino Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    padding: 24px;
+    min-height: 100vh;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  header h1 { font-size: 1.5rem; font-weight: 700; }
+  header h1 span { color: var(--primary); }
+  .notice {
+    font-size: 0.75rem;
+    color: var(--accent);
+    background: rgba(255,107,107,0.1);
+    border: 1px solid var(--accent);
+    padding: 4px 10px;
+    border-radius: 4px;
+  }
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .kpi-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .kpi-card .label { font-size: 0.75rem; color: var(--muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .kpi-card .value { font-size: 1.8rem; font-weight: 700; }
+  .kpi-card .value.green { color: var(--green); }
+  .kpi-card .value.purple { color: var(--primary); }
+  .kpi-card .value.yellow { color: var(--yellow); }
+  .kpi-card .value.red { color: var(--accent); }
+  .charts-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  @media (max-width: 768px) { .charts-grid { grid-template-columns: 1fr; } }
+  .chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .chart-card h3 { font-size: 0.9rem; color: var(--muted); margin-bottom: 16px; }
+  .chart-card.full { grid-column: 1 / -1; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  thead th {
+    text-align: left;
+    padding: 10px 12px;
+    color: var(--muted);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+  tbody tr {
+    border-bottom: 1px solid var(--border);
+    transition: background 0.15s;
+  }
+  tbody tr:hover { background: rgba(108,71,255,0.06); }
+  tbody td { padding: 10px 12px; }
+  td.num { text-align: right; font-variant-numeric: tabular-nums; }
+  .table-section {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 32px;
+    overflow-x: auto;
+  }
+  .table-section h3 { font-size: 0.9rem; color: var(--muted); margin-bottom: 16px; }
+  footer {
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--muted);
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+  .generated-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.7rem;
+    color: var(--muted);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-top: 8px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>📊 Webアクセス解析 <span>ダッシュボード</span></h1>
+    <div style="font-size:0.8rem; color:var(--muted); margin-top:4px;">2026年4月 — サイト全体</div>
+  </div>
+  <div class="notice">⚠️ このデータはすべてサンプル（架空のフィクション）です</div>
+</header>
+
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <div class="label">総セッション数</div>
+    <div class="value purple">98,063</div>
+  </div>
+  <div class="kpi-card">
+    <div class="label">総ページビュー</div>
+    <div class="value purple">135,666</div>
+  </div>
+  <div class="kpi-card">
+    <div class="label">コンバージョン数</div>
+    <div class="value green">1,422</div>
+  </div>
+  <div class="kpi-card">
+    <div class="label">CVR</div>
+    <div class="value green">1.45%</div>
+  </div>
+  <div class="kpi-card">
+    <div class="label">売上合計（架空）</div>
+    <div class="value yellow">¥4,552,000</div>
+  </div>
+</div>
+
+<div class="charts-grid">
+  <div class="chart-card full">
+    <h3>日別セッション数 / ページビュー推移</h3>
+    <canvas id="lineChart" height="80"></canvas>
+  </div>
+  <div class="chart-card">
+    <h3>日別コンバージョン数</h3>
+    <canvas id="barChart" height="150"></canvas>
+  </div>
+  <div class="chart-card">
+    <h3>日別売上（架空・千円単位）</h3>
+    <canvas id="revenueChart" height="150"></canvas>
+  </div>
+</div>
+
+<div class="table-section">
+  <h3>ページ別パフォーマンス</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>ページ名</th>
+        <th style="text-align:right">セッション</th>
+        <th style="text-align:right">PV</th>
+        <th style="text-align:right">平均滞在時間</th>
+        <th style="text-align:right">直帰率</th>
+        <th style="text-align:right">CV数</th>
+        <th style="text-align:right">CVR</th>
+        <th style="text-align:right">売上（架空）</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+        <tr>
+          <td>AI自動化ガイド</td>
+          <td class="num">45,240</td>
+          <td class="num">59,102</td>
+          <td class="num">5分02秒</td>
+          <td class="num">31.2%</td>
+          <td class="num">284</td>
+          <td class="num">0.63%</td>
+          <td class="num">¥0</td>
+        </tr>
+        <tr>
+          <td>ホーム</td>
+          <td class="num">29,195</td>
+          <td class="num">44,075</td>
+          <td class="num">2分13秒</td>
+          <td class="num">62.7%</td>
+          <td class="num">295</td>
+          <td class="num">1.01%</td>
+          <td class="num">¥1,180,000</td>
+        </tr>
+        <tr>
+          <td>サービス一覧</td>
+          <td class="num">10,007</td>
+          <td class="num">14,256</td>
+          <td class="num">3分42秒</td>
+          <td class="num">46.0%</td>
+          <td class="num">188</td>
+          <td class="num">1.88%</td>
+          <td class="num">¥752,000</td>
+        </tr>
+        <tr>
+          <td>事例紹介</td>
+          <td class="num">8,166</td>
+          <td class="num">12,209</td>
+          <td class="num">5分10秒</td>
+          <td class="num">32.9%</td>
+          <td class="num">80</td>
+          <td class="num">0.98%</td>
+          <td class="num">¥320,000</td>
+        </tr>
+        <tr>
+          <td>お問い合わせ</td>
+          <td class="num">5,455</td>
+          <td class="num">6,024</td>
+          <td class="num">1分56秒</td>
+          <td class="num">71.3%</td>
+          <td class="num">575</td>
+          <td class="num">10.54%</td>
+          <td class="num">¥2,300,000</td>
+        </tr>
+    </tbody>
+  </table>
+</div>
+
+<footer>
+  <p>Claude Code で自動生成されたサンプルダッシュボード</p>
+  <div class="generated-badge">⚡ Generated by Claude Code · 2026-04-28 01:12:30 · ※全データ架空</div>
+</footer>
+
+<script>
+const dates = ["2026-04-01", "2026-04-02", "2026-04-03", "2026-04-04", "2026-04-05", "2026-04-06", "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", "2026-04-11", "2026-04-12", "2026-04-13", "2026-04-14", "2026-04-15", "2026-04-16", "2026-04-17", "2026-04-18", "2026-04-19", "2026-04-20", "2026-04-21", "2026-04-22", "2026-04-23", "2026-04-24", "2026-04-25", "2026-04-26", "2026-04-27"];
+const sessions = [3100, 3295, 3330, 3305, 3685, 3250, 2952, 3205, 3465, 3655, 3670, 3935, 3488, 3182, 3695, 3985, 3788, 4171, 3752, 3391, 3970, 4325, 4068, 3908, 4233, 3810, 3450];
+const pvs = [4330, 4525, 4705, 4575, 5070, 4446, 4026, 4517, 4875, 5148, 5071, 5394, 4772, 4341, 5187, 5591, 5269, 5716, 5139, 4634, 5556, 6050, 5651, 5385, 5783, 5202, 4708];
+const convs = [50, 44, 58, 42, 40, 34, 30, 53, 62, 68, 52, 47, 39, 34, 68, 76, 61, 54, 46, 40, 72, 82, 65, 59, 55, 48, 43];
+const revs = [180, 148, 208, 132, 112, 96, 84, 188, 220, 240, 168, 132, 112, 96, 236, 264, 200, 156, 132, 112, 248, 280, 212, 184, 156, 136, 120];
+
+const gridColor = 'rgba(255,255,255,0.05)';
+const labelColor = '#8888aa';
+
+Chart.defaults.color = labelColor;
+Chart.defaults.borderColor = gridColor;
+
+new Chart(document.getElementById('lineChart'), {
+  type: 'line',
+  data: {
+    labels: dates,
+    datasets: [
+      {
+        label: 'セッション数',
+        data: sessions,
+        borderColor: '#6c47ff',
+        backgroundColor: 'rgba(108,71,255,0.12)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 2,
+      },
+      {
+        label: 'ページビュー',
+        data: pvs,
+        borderColor: '#00c896',
+        backgroundColor: 'rgba(0,200,150,0.08)',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 2,
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { position: 'top' } },
+    scales: {
+      x: { ticks: { maxTicksLimit: 14, font: { size: 11 } } },
+      y: { beginAtZero: false }
+    }
+  }
+});
+
+new Chart(document.getElementById('barChart'), {
+  type: 'bar',
+  data: {
+    labels: dates,
+    datasets: [{
+      label: 'コンバージョン数',
+      data: convs,
+      backgroundColor: 'rgba(0,200,150,0.7)',
+      borderRadius: 3,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { maxTicksLimit: 10, font: { size: 10 } } },
+      y: { beginAtZero: true }
+    }
+  }
+});
+
+new Chart(document.getElementById('revenueChart'), {
+  type: 'bar',
+  data: {
+    labels: dates,
+    datasets: [{
+      label: '売上（千円）',
+      data: revs,
+      backgroundColor: 'rgba(255,209,102,0.7)',
+      borderRadius: 3,
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { ticks: { maxTicksLimit: 10, font: { size: 10 } } },
+      y: { beginAtZero: true }
+    }
+  }
+});
+</script>
+</body>
+</html>
